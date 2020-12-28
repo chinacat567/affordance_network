@@ -1,0 +1,77 @@
+[1mdiff --git a/scripts/dataset_tools/create_pascal_tf_record.py b/scripts/dataset_tools/create_pascal_tf_record.py[m
+[1mindex bcb0ed5..0d94ba6 100755[m
+[1m--- a/scripts/dataset_tools/create_pascal_tf_record.py[m
+[1m+++ b/scripts/dataset_tools/create_pascal_tf_record.py[m
+[36m@@ -54,7 +54,7 @@[m [mFLAGS = flags.FLAGS[m
+ [m
+ SETS = ['train', 'val', 'trainval', 'test', 'train_generated', 'val_generated', 'test_generated'][m
+ YEARS = ['VOC2007', 'VOC2012', 'merged'][m
+[31m-FOLDERS = ['VOC2007', 'VOC2012', 'I2R_Data', 'I2R_Data_2'][m
+[32m+[m[32mFOLDERS = ['VOC2007', 'VOC2012', 'I2R_Data', 'I2R_Data_2', 'I2R_Data_3'][m
+ [m
+ def dict_to_tf_example(data,[m
+                        dataset_directory,[m
+[36m@@ -152,7 +152,7 @@[m [mdef main(_):[m
+     raise ValueError('year must be in : {}'.format(YEARS))[m
+ [m
+   data_dir = FLAGS.data_dir[m
+[31m-  years = ['VOC2007', 'VOC2012', 'I2R_Data', 'I2R_Data_2'][m
+[32m+[m[32m  years = FOLDERS[m
+   if FLAGS.year != 'merged':[m
+     years = [FLAGS.year][m
+ [m
+[1mdiff --git a/scripts/dataset_tools/run_select_percentages.sh b/scripts/dataset_tools/run_select_percentages.sh[m
+[1mindex 354336e..ca85c4d 100755[m
+[1m--- a/scripts/dataset_tools/run_select_percentages.sh[m
+[1m+++ b/scripts/dataset_tools/run_select_percentages.sh[m
+[36m@@ -4,4 +4,5 @@[m [mpython3 select_percentages.py \[m
+  -VOC2012 70 \[m
+  -VOC2007 20 \[m
+  -I2R_Data 10 \[m
+[31m- -I2R_Data_2 10[m
+[32m+[m[32m -I2R_Data_2 10 \[m
+[32m+[m[32m -I2R_Data_3 20[m
+[1mdiff --git a/scripts/dataset_tools/select_percentages.py b/scripts/dataset_tools/select_percentages.py[m
+[1mindex 13e8cc4..eb251b8 100644[m
+[1m--- a/scripts/dataset_tools/select_percentages.py[m
+[1m+++ b/scripts/dataset_tools/select_percentages.py[m
+[36m@@ -36,6 +36,11 @@[m [mparser.add_argument("-I2R_Data_2",[m
+                     help="Percentage of I2R_Data_2 dataset to select, default = 100",[m
+                     default = 100,[m
+                     type=int)[m
+[32m+[m[32mparser.add_argument("-I2R_Data_3",[m
+[32m+[m[32m                    "--I2R_Data_3_p",[m
+[32m+[m[32m                    help="Percentage of I2R_Data_3 dataset to select, default = 100",[m
+[32m+[m[32m                    default = 100,[m
+[32m+[m[32m                    type=int)[m
+ args = parser.parse_args()[m
+ [m
+ for arg in vars(args):[m
+[36m@@ -44,6 +49,7 @@[m [mfor arg in vars(args):[m
+ [m
+ folders = {	'I2R_Data' : args.I2R_Data_p ,[m
+  			'I2R_Data_2' : args.I2R_Data_2_p ,[m
+[32m+[m[41m [m			[32m'I2R_Data_3' : args.I2R_Data_3_p ,[m
+ 			'VOC2007' : args.VOC2007_p ,[m
+ 			'VOC2012' : args.VOC2012_p[m
+ [m
+[36m@@ -51,6 +57,7 @@[m [mfolders = {	'I2R_Data' : args.I2R_Data_p ,[m
+ fnames = { [m
+ 				"I2R_Data" : [],[m
+ 				"I2R_Data_2" :	[],[m
+[32m+[m				[32m"I2R_Data_3" :	[],[m
+ 				"VOC2007"	: [],[m
+ 				"VOC2012"	: [][m
+ 			}[m
+[1mdiff --git a/scripts/dataset_tools/shuffle_data.py b/scripts/dataset_tools/shuffle_data.py[m
+[1mindex d191c02..d0bc1bb 100644[m
+[1m--- a/scripts/dataset_tools/shuffle_data.py[m
+[1m+++ b/scripts/dataset_tools/shuffle_data.py[m
+[36m@@ -43,6 +43,7 @@[m [mdata_dict = {[m
+ [m
+ folders = {	'I2R_Data' ,[m
+  			'I2R_Data_2' ,[m
+[32m+[m[41m [m			[32m'I2R_Data_3' ,[m
+ 			'VOC2007' ,[m
+ 			'VOC2012' [m
+ 			}[m
